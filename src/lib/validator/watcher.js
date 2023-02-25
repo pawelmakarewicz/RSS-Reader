@@ -1,23 +1,8 @@
 import onChange from 'on-change';
 import * as Yup from 'yup';
+import render from './formRender.js';
 
 const urlValidationSchema = Yup.string().url('Ссылка должна быть валидным URL');
-
-const render = (elements, state) => (path, value, prevValue) => {
-  if (path === 'formUiState.state') {
-    if (value === 'invalid') {
-      elements.rssInput.classList.add('is-invalid');
-      elements.rssFormFeedback.classList.add('text-danger');
-    } else {
-      elements.rssInput.classList.remove('is-invalid');
-      elements.rssFormFeedback.classList.remove('text-danger');
-      elements.rssFormFeedback.classList.add('text-success');
-    }
-  }
-  if (path === 'formUiState.description') {
-    elements.rssFormFeedback.textContent = `${value}`;
-  }
-};
 
 export default function validateForm() {
   const initialStateForm = {
@@ -35,7 +20,7 @@ export default function validateForm() {
     rssFormFeedback: document.querySelector('.feedback'),
   };
 
-  const watchedState = onChange(initialStateForm, render(elements, initialStateForm));
+  const watchedState = onChange(initialStateForm, render(elements));
 
   function changeUiState(newState, descriptionOfNewState) {
     watchedState.formUiState.state = newState;

@@ -1,0 +1,17 @@
+export default function render(elements) {
+  return (path, value) => {
+    if (path === 'formUiState.state') {
+      if (value === 'invalid') {
+        elements.rssInput.classList.add('is-invalid');
+        elements.rssFormFeedback.classList.add('text-danger');
+      } else {
+        elements.rssInput.classList.remove('is-invalid');
+        elements.rssFormFeedback.classList.remove('text-danger');
+        elements.rssFormFeedback.classList.add('text-success');
+      }
+    }
+    if (path === 'formUiState.description') {
+      elements.rssFormFeedback.textContent = `${value}`;
+    }
+  };
+}
