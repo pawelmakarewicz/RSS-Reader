@@ -6,7 +6,9 @@ const initialStateForm = {
     state: null,
     description: null,
   },
-  errors: {},
+  rssPosts: [],
+  rssFeeds: [],
+  errors: [],
 };
 
 export default function initState(onStateChange) {
@@ -19,11 +21,19 @@ export default function initState(onStateChange) {
   function addErr(e) {
     watchedState.errors = e;
   }
-
   function addLink(link) {
     watchedState.rssLinks.push(link);
   }
+
+  function addRssPost(post) {
+    watchedState.rssPosts.push(post);
+  }
+
+  function addRssFeed(feed) {
+    watchedState.rssFeeds.push(feed);
+  }
+
   return {
-    watchedState, addErr, addLink, changeUiState,
+    watchedState, addErr, addLink, changeUiState, addRssPost, addRssFeed,
   };
 }

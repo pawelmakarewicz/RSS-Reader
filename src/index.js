@@ -2,10 +2,12 @@
 import './styles.scss';
 import 'bootstrap';
 import i18n from 'i18next';
-import form from './lib/validator/formEvents.js';
-import resources from './lib/locales/index.js';
-import initState from './lib/validator/state.js';
-import render from './lib/validator/formRender.js';
+import axios from 'axios';
+import form from './modules/form/formEvents.js';
+import resources from './modules/locales/index.js';
+import initState from './modules/form/state.js';
+import render from './modules/form/formRender.js';
+import parseRSS from './modules/form/parser.js';
 
 const i18nextInstance = i18n.createInstance();
 i18nextInstance.init({
@@ -22,5 +24,5 @@ i18nextInstance.init({
       rssFormFeedback: document.querySelector('.feedback'),
     };
     const state = initState(render(elements));
-    form(state, elements, i18nextInstance);
+    form(state, elements, i18nextInstance, axios.get, parseRSS);
   });
