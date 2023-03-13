@@ -8,6 +8,8 @@ import resources from './modules/locales/index.js';
 import initState from './modules/form/state.js';
 import render from './modules/form/formRender.js';
 import parseRSS from './modules/form/parser.js';
+import useProxy from './modules/form/useProxy.js';
+import setUpdateParameters from './modules/form/setUpdateParameters.js';
 
 const i18nextInstance = i18n.createInstance();
 i18nextInstance.init({
@@ -25,5 +27,5 @@ i18nextInstance.init({
       buttonToAddRss: document.querySelector('button[type="submit"]'),
     };
     const state = initState(render(elements));
-    form(state, elements, i18nextInstance, axios.get, parseRSS);
+    form(state, elements, i18nextInstance, axios.get, parseRSS, useProxy, setUpdateParameters);
   });

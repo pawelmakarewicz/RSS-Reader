@@ -31,6 +31,7 @@ export default function initState(onStateChange) {
   function addErr(e) {
     watchedState.errors = e;
   }
+
   function addLink(link) {
     watchedState.rssLinks.push(link);
   }
@@ -43,7 +44,26 @@ export default function initState(onStateChange) {
     watchedState.rssFeeds.push({ id: giveIdNumber(watchedState.rssFeeds), ...feed });
   }
 
+  function getRssLinks() {
+    return watchedState.rssLinks;
+  }
+
+  function getRssPosts() {
+    return watchedState.rssPosts;
+  }
+  function getRssFeeds() {
+    return watchedState.rssFeeds;
+  }
+
   return {
-    watchedState, addErr, addLink, changeUiState, addRssPost, addRssFeed,
+    watchedState,
+    addErr,
+    addLink,
+    changeUiState,
+    addRssPost,
+    addRssFeed,
+    getRssLinks,
+    getRssPosts,
+    getRssFeeds,
   };
 }

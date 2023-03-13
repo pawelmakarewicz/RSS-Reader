@@ -1,10 +1,14 @@
 import * as Yup from 'yup';
 
-function useProxy(url) {
-  return `https://allorigins.hexlet.app/get?disableCache=true&url=${url}`;
-}
-
-export default function setUpFormEvents(state, elements, i18nextInstance, makeRequest, parseRSS) {
+export default function setUpFormEvents(
+  state,
+  elements,
+  i18nextInstance,
+  makeRequest,
+  parseRSS,
+  useProxy,
+  makeUpdate,
+) {
   function onSubmit(e) {
     e.preventDefault();
     state.changeUiState('loading');
@@ -24,6 +28,7 @@ export default function setUpFormEvents(state, elements, i18nextInstance, makeRe
         rssPosts.forEach((post) => { state.addRssPost(post); });
         state.addLink(newRssLink);
         state.changeUiState('valid', i18nextInstance.t('signUpForm.validationResult.urlIsOk'));
+        makeUpdate(state, makeRequest, parseRSS, useProxy);
       })
       .catch((err) => {
         let message;
