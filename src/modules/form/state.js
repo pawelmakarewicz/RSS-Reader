@@ -11,9 +11,19 @@ const initialStateForm = {
   errors: [],
 };
 
+function giveIdNumber(list) {
+  if (list.length === 0) {
+    return 1;
+  }
+  const ids = list.map((object) => object.id);
+  const max = Math.max(...ids);
+  const newId = max + 1;
+  return newId;
+}
+
 export default function initState(onStateChange) {
   const watchedState = onChange(initialStateForm, onStateChange);
-  function changeUiState(newState, descriptionOfNewState) {
+  function changeUiState(newState, descriptionOfNewState = '') {
     watchedState.formUiState.state = newState;
     watchedState.formUiState.description = descriptionOfNewState;
   }
@@ -26,11 +36,11 @@ export default function initState(onStateChange) {
   }
 
   function addRssPost(post) {
-    watchedState.rssPosts.push(post);
+    watchedState.rssPosts.push({ id: giveIdNumber(watchedState.rssPosts), ...post });
   }
 
   function addRssFeed(feed) {
-    watchedState.rssFeeds.push(feed);
+    watchedState.rssFeeds.push({ id: giveIdNumber(watchedState.rssFeeds), ...feed });
   }
 
   return {

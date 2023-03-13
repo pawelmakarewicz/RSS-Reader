@@ -22,6 +22,7 @@ i18nextInstance.init({
       rssForm: document.querySelector('form'),
       rssInput: document.querySelector('#url-input'),
       rssFormFeedback: document.querySelector('.feedback'),
+      buttonToAddRss: document.querySelector('button[type="submit"]'),
     };
     const state = initState(render(elements));
     form(state, elements, i18nextInstance, axios.get, parseRSS);

@@ -7,6 +7,7 @@ function useProxy(url) {
 export default function setUpFormEvents(state, elements, i18nextInstance, makeRequest, parseRSS) {
   function onSubmit(e) {
     e.preventDefault();
+    state.changeUiState('loading');
     const formData = new FormData(e.target);
     const newRssLink = formData.get('url');
     if (state.watchedState.rssLinks.includes(newRssLink)) {
@@ -17,12 +18,12 @@ export default function setUpFormEvents(state, elements, i18nextInstance, makeRe
     urlValidationSchema.validate(newRssLink)
       .then(() => makeRequest(useProxy(newRssLink)))
       .then((response) => {
-        console.log(response.data.contents);
         const xmlDoc = parseRSS(response.data.contents, 'text/xml');
-      })
-      .then(() => {
-        state.changeUiState('valid', i18nextInstance.t('signUpForm.validationResult.urlIsOk'));
+        const { feed, rssPosts } = xmlDoc;
+        state.addRssFeed(feed);
+        rssPosts.forEach((post) => { state.addRssPost(post); });
         state.addLink(newRssLink);
+        state.changeUiState('valid', i18nextInstance.t('signUpForm.validationResult.urlIsOk'));
       })
       .catch((err) => {
         let message;
