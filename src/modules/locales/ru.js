@@ -1,6 +1,7 @@
 export default {
   translation: {
     signUpForm: {
+      previewButton: 'Просмотр',
       validationResult: {
         urlIsOk: 'RSS успешно загружен',
         alreadyExist: 'RSS уже существует',

@@ -7,9 +7,9 @@ import form from './modules/form/formEvents.js';
 import resources from './modules/locales/index.js';
 import initState from './modules/form/state.js';
 import render from './modules/form/formRender.js';
-import parseRSS from './modules/form/parser.js';
-import useProxy from './modules/form/useProxy.js';
-import setUpdateParameters from './modules/form/setUpdateParameters.js';
+import parseRSS from './modules/lib/parser.js';
+import useProxy from './modules/lib/useProxy.js';
+import setUpdateParameters from './modules/lib/makeUpdates.js';
 
 const i18nextInstance = i18n.createInstance();
 i18nextInstance.init({
@@ -25,7 +25,9 @@ i18nextInstance.init({
       rssInput: document.querySelector('#url-input'),
       rssFormFeedback: document.querySelector('.feedback'),
       buttonToAddRss: document.querySelector('button[type="submit"]'),
+      rssPostsContainer: document.querySelector('div.posts'),
+      rssFeedsContainer: document.querySelector('div.feeds'),
     };
-    const state = initState(render(elements));
+    const state = initState(render(elements, i18nextInstance));
     form(state, elements, i18nextInstance, axios.get, parseRSS, useProxy, setUpdateParameters);
   });

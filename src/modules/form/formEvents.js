@@ -24,8 +24,8 @@ export default function setUpFormEvents(
       .then((response) => {
         const xmlDoc = parseRSS(response.data.contents, 'text/xml');
         const { feed, rssPosts } = xmlDoc;
+        state.addRssPosts(rssPosts);
         state.addRssFeed(feed);
-        rssPosts.forEach((post) => { state.addRssPost(post); });
         state.addLink(newRssLink);
         state.changeUiState('valid', i18nextInstance.t('signUpForm.validationResult.urlIsOk'));
         makeUpdate(state, makeRequest, parseRSS, useProxy);

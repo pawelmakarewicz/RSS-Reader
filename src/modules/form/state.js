@@ -6,6 +6,8 @@ const initialStateForm = {
     state: null,
     description: null,
   },
+  postsUiState: [],
+  intervalOfUpdates: 5000,
   rssPosts: [],
   rssFeeds: [],
   errors: [],
@@ -36,12 +38,16 @@ export default function initState(onStateChange) {
     watchedState.rssLinks.push(link);
   }
 
-  function addRssPost(post) {
-    watchedState.rssPosts.push({ id: giveIdNumber(watchedState.rssPosts), ...post });
+  function addRssPosts(posts) {
+    watchedState.rssPosts.push(...posts.map((post) => ({ id: giveIdNumber(watchedState.rssPosts), ...post })));
+    watchedState.postsUiState.push(...watchedState.rssPosts.map((postWithId) => {
+      const { id } = postWithId;
+      return { postId: id, uiState: 'not visited' };
+    }));
   }
 
   function addRssFeed(feed) {
-    watchedState.rssFeeds.push({ id: giveIdNumber(watchedState.rssFeeds), ...feed });
+    watchedState.rssFeeds.push(feed);
   }
 
   function getRssLinks() {
@@ -55,15 +61,25 @@ export default function initState(onStateChange) {
     return watchedState.rssFeeds;
   }
 
+  function getIntervalOfUpdates() {
+    return watchedState.intervalOfUpdates;
+  }
+
+  function getErrors() {
+    return watchedState.errors;
+  }
+
   return {
     watchedState,
     addErr,
     addLink,
     changeUiState,
-    addRssPost,
+    addRssPosts,
     addRssFeed,
     getRssLinks,
     getRssPosts,
     getRssFeeds,
+    getIntervalOfUpdates,
+    getErrors,
   };
 }
