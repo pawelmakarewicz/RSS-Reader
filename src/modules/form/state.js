@@ -13,14 +13,12 @@ const initialStateForm = {
   errors: [],
 };
 
-function giveIdNumber(list) {
+function giveMaxId(list) {
   if (list.length === 0) {
     return 1;
   }
   const ids = list.map((object) => object.id);
-  const max = Math.max(...ids);
-  const newId = max + 1;
-  return newId;
+  return Math.max(...ids);
 }
 
 export default function initState(onStateChange) {
@@ -39,11 +37,22 @@ export default function initState(onStateChange) {
   }
 
   function addRssPosts(posts) {
-    watchedState.rssPosts.push(...posts.map((post) => ({ id: giveIdNumber(watchedState.rssPosts), ...post })));
-    watchedState.postsUiState.push(...watchedState.rssPosts.map((postWithId) => {
-      const { id } = postWithId;
-      return { postId: id, uiState: 'not visited' };
+    let currentMaxId = giveMaxId(watchedState.rssPosts);
+    const newPosts = posts.map((post) => {
+      const newPost = { id: currentMaxId, ...post };
+      currentMaxId += 1;
+      return newPost;
+    });
+    watchedState.rssPosts.push(...newPosts);
+    watchedState.postsUiState.push(...newPosts.map((newPost) => {
+      const { id } = newPost;
+      return { postId: id, uiState: 'not Visited' };
     }));
+  }
+
+  function changeUiStateOfPost(id) {
+    const index = watchedState.postsUiState.findIndex((element) => element.postId === id);
+    watchedState.postsUiState[index].uiState = 'visited';
   }
 
   function addRssFeed(feed) {
@@ -74,6 +83,7 @@ export default function initState(onStateChange) {
     addErr,
     addLink,
     changeUiState,
+    changeUiStateOfPost,
     addRssPosts,
     addRssFeed,
     getRssLinks,

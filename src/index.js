@@ -10,6 +10,7 @@ import render from './modules/form/formRender.js';
 import parseRSS from './modules/lib/parser.js';
 import useProxy from './modules/lib/useProxy.js';
 import setUpdateParameters from './modules/lib/makeUpdates.js';
+import postsWatcher from './modules/form/postsEvents.js';
 
 const i18nextInstance = i18n.createInstance();
 i18nextInstance.init({
@@ -30,4 +31,5 @@ i18nextInstance.init({
     };
     const state = initState(render(elements, i18nextInstance));
     form(state, elements, i18nextInstance, axios.get, parseRSS, useProxy, setUpdateParameters);
+    postsWatcher(elements, state);
   });

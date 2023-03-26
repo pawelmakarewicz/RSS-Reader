@@ -84,6 +84,7 @@ export default function render(elements, i18nextInstance) {
       elements.rssFormFeedback.textContent = `${value}`;
     }
     if (path === 'rssPosts') {
+      console.log(this.postsUiState);
       const listOfPosts = createElementWithStyle('ul', styles.classesOfList);
       this.rssPosts.forEach((post) => {
         const {
