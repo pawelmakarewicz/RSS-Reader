@@ -53,14 +53,18 @@ function setAttributeButtonPreview(id) {
 }
 
 const styles = {
-  classesOfWrapper: ['card', 'border-0'],
-  classesOfList: ['list-group', 'border-0', 'rounded-0'],
-  classesOfListItem: ['list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0'],
-  classesOfLink: ['fw-bold'],
-  classesOfFeedItem: ['list-group-item', 'border-0', 'border-end-0'],
+  wrapper: ['card', 'border-0'],
+  list: ['list-group', 'border-0', 'rounded-0'],
+  listItem: ['list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0'],
+  link: ['fw-bold'],
+  visitedLink: ['fw-normal', 'link-secondary'],
+  feedItem: ['list-group-item', 'border-0', 'border-end-0'],
   feedTitle: ['h6', 'm-0'],
   feedDescription: ['m-0', 'small', 'text-black-50'],
   buttonOfPreview: ['btn', 'btn-outline-primary', 'btn-sm'],
+  assignState(uiState) {
+    return uiState === 'visited' ? this.visitedLink : this.link;
+  },
 };
 
 export default function render(elements, i18nextInstance) {
@@ -84,14 +88,15 @@ export default function render(elements, i18nextInstance) {
       elements.rssFormFeedback.textContent = `${value}`;
     }
     if (path === 'rssPosts') {
-      console.log(this.postsUiState);
-      const listOfPosts = createElementWithStyle('ul', styles.classesOfList);
+      const listOfPosts = createElementWithStyle('ul', styles.list);
+      const currentPostsUiState = this.postsUiState;
       this.rssPosts.forEach((post) => {
         const {
           id, title, link,
         } = post;
-        const listElement = createElementWithStyle('li', styles.classesOfListItem);
-        const reference = createElementWithStyle('a', styles.classesOfLink);
+        const listElement = createElementWithStyle('li', styles.listItem);
+        const uiStateOfPost = currentPostsUiState.find((el) => el.postId === id).uiState;
+        const reference = createElementWithStyle('a', styles.assignState(uiStateOfPost));
         setAttributeLink(link, id)
           .forEach(({ attributeName, attributeValue }) => {
             reference.setAttribute(attributeName, attributeValue);
@@ -108,27 +113,27 @@ export default function render(elements, i18nextInstance) {
         listOfPosts.prepend(listElement);
       });
       elements.rssPostsContainer.innerHTML = '';
-      const divWrapper = createElementWithStyle('div', styles.classesOfWrapper);
-      divWrapper.innerHTML = addTitle('Посты');
+      const divWrapper = createElementWithStyle('div', styles.wrapper);
+      divWrapper.innerHTML = addTitle(i18nextInstance.t('signUpForm.posts'));
       elements.rssPostsContainer.append(divWrapper);
       divWrapper.append(listOfPosts);
     }
     if (path === 'rssFeeds') {
-      const listOfFeeds = createElementWithStyle('ul', styles.classesOfList);
+      const listOfFeeds = createElementWithStyle('ul', styles.list);
       this.rssFeeds.forEach((feed) => {
         const { titleFeed, descriptionFeed } = feed;
-        const listElementFeed = createElementWithStyle('li', styles.classesOfFeedItem);
+        const listElementFeed = createElementWithStyle('li', styles.feedItem);
         const feedTitle = createElementWithStyle('h3', styles.feedTitle);
         feedTitle.textContent = titleFeed;
         const feedDescription = createElementWithStyle('p', styles.feedDescription);
         feedDescription.textContent = descriptionFeed;
         listElementFeed.append(feedTitle);
         listElementFeed.append(feedDescription);
-        listOfFeeds.append(listElementFeed);
+        listOfFeeds.prepend(listElementFeed);
       });
       elements.rssFeedsContainer.innerHTML = '';
-      const divWrapperFeed = createElementWithStyle('div', styles.classesOfWrapper);
-      divWrapperFeed.innerHTML = addTitle('Фиды');
+      const divWrapperFeed = createElementWithStyle('div', styles.wrapper);
+      divWrapperFeed.innerHTML = addTitle(i18nextInstance.t('signUpForm.feeds'));
       divWrapperFeed.append(listOfFeeds);
       elements.rssFeedsContainer.append(divWrapperFeed);
     }

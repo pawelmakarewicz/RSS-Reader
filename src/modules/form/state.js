@@ -43,11 +43,11 @@ export default function initState(onStateChange) {
       currentMaxId += 1;
       return newPost;
     });
-    watchedState.rssPosts.push(...newPosts);
     watchedState.postsUiState.push(...newPosts.map((newPost) => {
       const { id } = newPost;
       return { postId: id, uiState: 'not Visited' };
     }));
+    watchedState.rssPosts.push(...newPosts);
   }
 
   function changeUiStateOfPost(id) {
