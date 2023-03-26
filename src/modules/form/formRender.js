@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 function addTitle(titleName) {
   return `<div class="card-body"><h2 class="card-title h4">${titleName}</h2></div>`;
 }
