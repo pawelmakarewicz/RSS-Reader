@@ -10,6 +10,7 @@ const initialStateForm = {
   intervalOfUpdates: 5000,
   rssPosts: [],
   rssFeeds: [],
+  currentPost: null,
   errors: [],
 };
 
@@ -78,6 +79,10 @@ export default function initState(onStateChange) {
     return watchedState.errors;
   }
 
+  function changeCurrentPost(id) {
+    watchedState.currentPost = id;
+  }
+
   return {
     watchedState,
     addErr,
@@ -91,5 +96,6 @@ export default function initState(onStateChange) {
     getRssFeeds,
     getIntervalOfUpdates,
     getErrors,
+    changeCurrentPost,
   };
 }

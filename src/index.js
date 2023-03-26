@@ -28,6 +28,7 @@ i18nextInstance.init({
       buttonToAddRss: document.querySelector('button[type="submit"]'),
       rssPostsContainer: document.querySelector('div.posts'),
       rssFeedsContainer: document.querySelector('div.feeds'),
+      modalWindow: document.querySelector('#modal'),
     };
     const state = initState(render(elements, i18nextInstance));
     form(state, elements, i18nextInstance, axios.get, parseRSS, useProxy, setUpdateParameters);

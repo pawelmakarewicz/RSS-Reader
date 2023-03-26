@@ -69,6 +69,7 @@ const styles = {
 
 export default function render(elements, i18nextInstance) {
   return function onChangeRender(path, value) {
+    const currentRssPosts = this.rssPosts;
     if (path === 'formUiState.state') {
       if (value === 'invalid') {
         elements.rssInput.classList.add('is-invalid');
@@ -90,7 +91,7 @@ export default function render(elements, i18nextInstance) {
     if (path === 'rssPosts') {
       const listOfPosts = createElementWithStyle('ul', styles.list);
       const currentPostsUiState = this.postsUiState;
-      this.rssPosts.forEach((post) => {
+      currentRssPosts.forEach((post) => {
         const {
           id, title, link,
         } = post;
@@ -136,6 +137,18 @@ export default function render(elements, i18nextInstance) {
       divWrapperFeed.innerHTML = addTitle(i18nextInstance.t('signUpForm.feeds'));
       divWrapperFeed.append(listOfFeeds);
       elements.rssFeedsContainer.append(divWrapperFeed);
+    }
+    if (path === 'currentPost') {
+      const postForPreview = currentRssPosts.find((post) => post.id === value);
+      const {
+        description, title, link,
+      } = postForPreview;
+      const previewWindowTitle = elements.modalWindow.querySelector('h5');
+      previewWindowTitle.textContent = title;
+      const previewWindowDescription = elements.modalWindow.querySelector('.modal-body');
+      previewWindowDescription.textContent = description;
+      const previewWindowLink = elements.modalWindow.querySelector('a');
+      previewWindowLink.setAttribute('href', `${link}`);
     }
   };
 }
