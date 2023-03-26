@@ -39,8 +39,10 @@ export default function setUpdateParameters(state, makeRequest, parseRSS, usePro
               state.addErr(e);
             }
           });
-        state.addRssPosts(newPosts);
-        newPosts = [];
+        if (newPosts.length > 0) {
+          state.addRssPosts(newPosts);
+          newPosts = [];
+        }
         return update();
       });
   }
