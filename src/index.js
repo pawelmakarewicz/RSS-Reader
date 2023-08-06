@@ -14,10 +14,10 @@ import postsWatcher from './modules/form/postsEvents.js';
 
 const i18nextInstance = i18n.createInstance();
 i18nextInstance.init({
-  lng: 'ru',
+  lng: 'en',
   debug: true,
   resources: {
-    ru: resources.ru,
+    en: resources.en,
   },
 })
   .then(() => {
